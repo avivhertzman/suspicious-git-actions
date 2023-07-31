@@ -1,32 +1,24 @@
 import { SuspicouseBehaviorsDetection } from "../abstract/SuspicouseBehaviorsDetection";
-import { namespace } from "d3";
+
+const MILLISECONDS_UNIT = 1000;
+const HOURS_UNIT = 60;
+const MINUTES_UNIT = 60;
+const TEN_MINUTES_IN_MILLISECONDS = MILLISECONDS_UNIT * HOURS_UNIT * MINUTES_UNIT;
+const EVENT_INFO_MESSAGE = "Delete repository event with repository name ";
+const SUSPICOUSE_BEHAVIORS_MESSAGE = "the repository was deleted in less than 10 minutes after it was created";
 
 export class RepoDeletedService extends SuspicouseBehaviorsDetection {
     constructor() {
         super();
     }
 
-    findSuspiciousBehaviors(body: any): void {
-        const repository = body;
-        const createdTime = repository["created_at"];
+    findSuspiciousBehaviors(body: {created_at: string, name: string}): void {
+        const createdTime = body?.created_at;
         const creationTime: number = new Date(createdTime.slice(0, createdTime.length-1)).getTime();
-        const date = new Date().getTime();
-        if (date - creationTime < (1000 * 60 * 60)) {
-            super.notifyUser(`delete repository event with repository name ${repository?.name}`, `the repository was created and deleted within 10 minutes`)
+        const deleteDate: number = new Date().getTime();
+        const timeDiffrence = deleteDate - creationTime;
+        if (timeDiffrence < TEN_MINUTES_IN_MILLISECONDS || timeDiffrence == TEN_MINUTES_IN_MILLISECONDS) {
+            super.notifyUser(EVENT_INFO_MESSAGE + body?.name, SUSPICOUSE_BEHAVIORS_MESSAGE)
         }
     }
-
-}
-function formatDate(inputDateString) {
-    const date = new Date(inputDateString);
-    const formattedDate = date.toLocaleString('en-US', {
-      month: '2-digit',
-      day: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZoneName: 'short',
-    });
-    return formattedDate.replace(',', '');
   }

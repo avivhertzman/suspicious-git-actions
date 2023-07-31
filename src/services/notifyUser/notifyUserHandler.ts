@@ -6,7 +6,7 @@ export class NotifyUserService {
     constructor() {
         this.notifiers.push(new ConsoleNotifyUserService())
     }
-    updateNotifiers(eventString: string, anomalDetection: string) {
-        this.notifiers.forEach(notifier => notifier.notify(eventString, anomalDetection))
+    updateNotifiers(eventInfo: string, suspicouseBehaviorInfo: string) {
+        this.notifiers.forEach(notifier => notifier.notify(eventInfo, suspicouseBehaviorInfo))
     }
 }

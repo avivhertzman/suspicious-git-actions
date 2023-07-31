@@ -1,5 +1,5 @@
 export enum EventTypes  {
-    TEAM_CREATE,
-    REPO_CREATE,
-    CODE_PUSH
+    TEAM_CREATE = "team",
+    REPO_DELETE = "repository",
+    CODE_PUSH = "push"
 }

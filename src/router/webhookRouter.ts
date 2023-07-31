@@ -1,17 +1,28 @@
 import * as express from 'express';
-import findSuspicous from '../controller/controller';
+import {    WebhookController } from '../controller/webhookController';
+import { EventTypes } from '../data/enum/eventTypesEnum';
+import { StatusCodes } from 'http-status-codes';
+import { CodePushService } from '../services/codePushService';
+import { TeamCreateService } from '../services/teamCreateService';
+import { RepoDeletedService } from '../services/repoDeletedService';
 
-const ACCEPTABLE_EVENTS = ['repository', 'team', 'push']
+const GitHUB_EVENT_HEADER = 'X-GitHub-Event';
 
 const webhookRouter = express.Router();
 
+const userController = new WebhookController(new CodePushService(), new TeamCreateService, new RepoDeletedService);
+
+
 webhookRouter.use((req, res, next) => {
-    if (ACCEPTABLE_EVENTS.includes(req.get('X-GitHub-Event') as string))
+    const eventHeader = req.get(GitHUB_EVENT_HEADER);
+    if (Object.values(EventTypes).includes(eventHeader as EventTypes)) {
+        res.locals.eventHeader = eventHeader;
         next();
+    }
     else
-        res.sendStatus(400);
+        res.sendStatus(StatusCodes.BAD_REQUEST);
 })
 
-webhookRouter.post('/', findSuspicous)
+webhookRouter.post('/', userController.findSuspicous.bind(userController))
 
 export default webhookRouter;

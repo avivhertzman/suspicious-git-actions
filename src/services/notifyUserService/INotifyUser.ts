@@ -1,3 +1,3 @@
 export interface INotifyUser {
-    notify(eventString: string, anomalDetection: string): void 
+    notify(eventInfo: string, suspicouseBehaviorInfo: string): void 
 }
