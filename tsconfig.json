@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs",
+        "outDir": "dist",
+        "sourceMap": true
+    },
+    "include": ["src/**/*.ts", "src/example/main.js", "src/example/commands-legacy.js"]
+}
