@@ -1,7 +1,5 @@
 import { SuspicouseBehaviorsDetection } from "../abstract/SuspicouseBehaviorsDetection";
-import { inject, injectable } from "tsyringe";
 
-// import {EVENT_INFO} from '../data/constants';
 const EVENT_INFO_MESSAGE = "create team with team name";
 const SUSPICOUSE_BEHAVIORS_MESSAGE = 'name starts with hacker prefix.';
 

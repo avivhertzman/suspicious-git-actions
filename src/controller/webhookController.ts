@@ -1,6 +1,5 @@
 import { EventTypes } from "../data/enum/eventTypesEnum"
 import { StatusCodes } from 'http-status-codes';
-import { inject, injectable } from "tsyringe";
 import { SuspicouseBehaviorsDetection } from "../abstract/SuspicouseBehaviorsDetection";
 
 const REPO_DELETE_ACTION = "deleted";
